@@ -43,7 +43,7 @@
         }
     }   
 
-
+    //ConcreteDecorator
     public class DieselCarDecorator : CarDecorator
     {
         public DieselCarDecorator(ICar car) : base(car)
