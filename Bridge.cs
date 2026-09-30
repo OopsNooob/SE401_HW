@@ -57,3 +57,18 @@
     {
 
     }
+
+
+#### **Code Mẫu (C#)**:
+
+```
+public interface IDevice { void TurnOn(); }
+public class TV : IDevice { public void TurnOn() =&gt; Console.WriteLine("TV ON"); }
+
+// Abstraction
+public class RemoteControl {
+    protected IDevice device; // Cầu nối
+    public RemoteControl(IDevice device) { this.device = device; } // Injection
+    public virtual void TogglePower() { device.TurnOn(); }
+}
+```

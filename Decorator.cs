@@ -108,3 +108,59 @@
             Console.ReadKey();
         }
     }   
+
+
+//1. Decorator Cổ điển (Classic Decorator - Chuẩn GoF)
+
+```
+public interface INotifier { void Send(string msg); }
+
+// Component gốc
+public class EmailNotifier : INotifier {
+    public void Send(string msg) =&gt; Console.WriteLine($"Email: {msg}");
+}
+
+// 1. Base Decorator Class
+public abstract class NotifierDecorator : INotifier {
+    protected INotifier _wrapper;
+    public NotifierDecorator(INotifier notifier) { _wrapper = notifier; }
+    public virtual void Send(string msg) =&gt; _wrapper.Send(msg);
+}
+
+// 2. Concrete Decorator
+public class SMSDecorator : NotifierDecorator {
+    public SMSDecorator(INotifier notifier) : base(notifier) {}
+    public override void Send(string msg) {
+        base.Send(msg); // Gọi lớp bọc bên trong
+        Console.WriteLine($"SMS: {msg}"); // Bổ sung tính năng mới
+    }
+}
+
+
+// Bỏ qua lớp Abstract Base Decorator
+public class LoggingCarDecorator : ICar {
+    private readonly ICar _innerCar; // Bọc trực tiếp
+    public LoggingCarDecorator(ICar car) { _innerCar = car; }
+
+    public ICar ManufactureCar() {
+        Console.WriteLine("[LOG]: Dang san xuat xe...");
+        return _innerCar.ManufactureCar(); // Chuyển tiếp
+    }
+}
+
+
+public static class FunctionalDecorator {
+    // Bọc thêm tính năng Logging cho một Action
+    public static Action<string> WithLogging(Action<string> action) {
+        return message => {
+            Console.WriteLine("[LOG START]");
+            action(message); // Gọi hàm gốc
+            Console.WriteLine("[LOG END]");
+        };
+    }
+}
+
+// Sử dụng tại Client:
+Action<string> sendEmail = msg => Console.WriteLine($"Email: {msg}");
+Action<string> sendWithLog = FunctionalDecorator.WithLogging(sendEmail);
+sendWithLog("Thong bao hop khan");
