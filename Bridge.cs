@@ -59,9 +59,6 @@
     }
 
 
-#### **Code Mẫu (C#)**:
-
-```
 public interface IDevice { void TurnOn(); }
 public class TV : IDevice { public void TurnOn() =&gt; Console.WriteLine("TV ON"); }
 
@@ -71,4 +68,24 @@ public class RemoteControl {
     public RemoteControl(IDevice device) { this.device = device; } // Injection
     public virtual void TogglePower() { device.TurnOn(); }
 }
-```
+
+
+public abstract class AutoShape {
+    protected Color color;
+    public AutoShape(string colorType) {
+        // Tự động dùng Factory để lấy Implementor phù hợp
+        color = ColorFactory.CreateColor(colorType);
+    }
+}
+
+
+public interface IWindowImp { void DevDrawLine(); }
+
+// Hiện tại chỉ có 1 lớp cài đặt duy nhất cho Windows
+public class WinWindowImp : IWindowImp {
+    public void DevDrawLine() =&gt; Console.WriteLine("Draw line on Windows");
+}
+
+public class Window {
+    protected IWindowImp imp = new WinWindowImp(); // Mặc định 1 lớp
+}
